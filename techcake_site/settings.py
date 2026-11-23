@@ -22,11 +22,11 @@ ALLOWED_HOSTS = [
     for h in os.environ.get("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
     if h.strip()
 ]
-CSRF_TRUSTED_ORIGINS = [
-    o.strip()
-    for o in os.environ.get("DJANGO_CSRF_TRUSTED_ORIGINS", "").split(",")
-    if o.strip()
-]
+
+# Allow EC2 private IP for ALB health checks
+EC2_PRIVATE_IP = os.environ.get("EC2_PRIVATE_IP", "")
+if EC2_PRIVATE_IP:
+    ALLOWED_HOSTS.append(EC2_PRIVATE_IP)
 
 # --- Applications ---------------------------------------------------
 INSTALLED_APPS = [
